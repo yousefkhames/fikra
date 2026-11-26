@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>فكرة · Fikra</title>
+<meta name="description" content="Offline idea bank for Shorts: hook templates and a content calendar. بنك أفكار للفيديوهات القصيرة.">
+<meta name="theme-color" content="#16130f">
+<link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><img src="logo.svg" alt="" width="40" height="40"><div><b data-i="brand">فكرة</b><small data-i="tagline"></small></div></div>
+  <nav class="tabs" role="tablist" aria-label="sections">
+    <button role="tab" data-view="ideas" id="tab-ideas"><span data-i="tab_ideas"></span></button>
+    <button role="tab" data-view="hooks" id="tab-hooks"><span data-i="tab_hooks"></span></button>
+    <button role="tab" data-view="cal" id="tab-cal"><span data-i="tab_cal"></span></button>
+  </nav>
+  <div class="tools">
+    <button id="langBtn" class="chip" aria-label="language">EN</button>
+    <button id="themeBtn" class="chip" aria-label="theme">◐</button>
+  </div>
+</header>
+
+<main>
+  <section id="view-ideas" class="view" hidden>
+    <div class="stats" id="stats"></div>
+    <div class="bar">
+      <input id="q" type="search" data-ph="search">
+      <select id="fStatus" aria-label="status"></select>
+      <select id="fTag" aria-label="tag"></select>
+      <button id="fStar" class="chip" aria-pressed="false">★</button>
+      <button id="addBtn" class="btn primary" data-i="add_idea"></button>
+    </div>
+    <div id="list" class="cards"></div>
+    <div class="io">
+      <button class="btn ghost" id="expJson" data-i="exp_json"></button>
+      <button class="btn ghost" id="expCsv" data-i="exp_csv"></button>
+      <button class="btn ghost" id="impBtn" data-i="imp_json"></button>
+      <input type="file" id="impFile" accept="application/json,.json" hidden>
+      <button class="btn ghost danger" id="wipeBtn" data-i="wipe"></button>
+    </div>
+  </section>
+
+  <section id="view-hooks" class="view" hidden>
+    <div class="gen">
+      <label for="topic" data-i="topic_label"></label>
+      <div class="row"><input id="topic" type="text" maxlength="60" data-ph="topic_ph"><button id="shuffle" class="btn primary" data-i="shuffle"></button></div>
+      <div class="cats" id="cats"></div>
+    </div>
+    <div id="hookList" class="hooks"></div>
+  </section>
+
+  <section id="view-cal" class="view" hidden>
+    <div class="calhead">
+      <button class="chip" id="prevM" aria-label="prev">‹</button>
+      <h2 id="monthTitle"></h2>
+      <button class="chip" id="nextM" aria-label="next">›</button>
+      <button class="btn ghost" id="todayBtn" data-i="today"></button>
+      <button class="btn ghost" id="icsBtn" data-i="exp_ics"></button>
+    </div>
+    <div class="dow" id="dow"></div>
+    <div class="grid" id="grid"></div>
+    <p class="hint" data-i="cal_hint"></p>
+  </section>
+</main>
+
+<footer><span data-i="foot"></span></footer>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<dialog id="editor" aria-labelledby="edTitle">
+  <form method="dialog" id="editForm">
+    <h3 id="edTitle"></h3>
+    <label><span data-i="f_title"></span><input name="title" maxlength="120" required></label>
+    <label><span data-i="f_hook"></span><textarea name="hook" rows="2" maxlength="300"></textarea></label>
+    <div class="two">
+      <label><span data-i="f_tag"></span><input name="tag" maxlength="30" list="tagList"></label>
+      <label><span data-i="f_date"></span><input name="date" type="date"></label>
+    </div>
+    <div class="two">
+      <label><span data-i="f_platform"></span><select name="platform"></select></label>
+      <label><span data-i="f_status"></span><select name="status"></select></label>
+    </div>
+    <label><span data-i="f_notes"></span><textarea name="notes" rows="3" maxlength="2000"></textarea></label>
+    <label class="inline"><input type="checkbox" name="star"><span data-i="f_star"></span></label>
+    <datalist id="tagList"></datalist>
+    <div class="actions">
+      <button type="button" class="btn ghost" id="edCancel" data-i="cancel"></button>
+      <button type="submit" class="btn primary" data-i="save"></button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dayDlg" aria-label="day">
+  <div id="dayBody"></div>
+  <div class="actions"><button type="button" class="btn ghost" id="dayClose" data-i="close"></button></div>
+</dialog>
+
+<script src="logic.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

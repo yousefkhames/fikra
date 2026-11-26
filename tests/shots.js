@@ -1,0 +1,21 @@
+const puppeteer = require(process.env.PUPPETEER_PATH || 'puppeteer-core');
+const out = process.argv[3], base = process.argv[2];
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+(async () => {
+  const b = await puppeteer.launch({ executablePath: process.env.CHROME || '/usr/bin/google-chrome', headless: 'new', args: ['--no-sandbox'] });
+  const p = await b.newPage();
+  await p.evaluateOnNewDocument(() => Object.defineProperty(navigator, 'language', { get: () => 'en-US' }));
+  await p.setViewport({ width: 400, height: 820, deviceScaleFactor: 2, isMobile: true });
+  await p.goto(base, { waitUntil: 'networkidle0' });
+  await p.click('#sampleBtn'); await sleep(2200);
+  await p.screenshot({ path: out + '/ideas-mobile.png' });
+  await p.click('#tab-hooks'); await p.type('#topic', 'video editing'); await sleep(300);
+  await p.screenshot({ path: out + '/hooks-mobile.png' });
+  await p.click('#tab-cal'); await sleep(300);
+  await p.screenshot({ path: out + '/calendar-mobile.png' });
+  await p.click('#langBtn'); await p.click('#tab-ideas'); await sleep(300);
+  await p.evaluate(() => { localStorage.clear(); }); await p.reload({ waitUntil: 'networkidle0' });
+  await p.click('#sampleBtn'); await sleep(2200);
+  await p.screenshot({ path: out + '/ideas-mobile-ar.png' });
+  await b.close();
+})();
