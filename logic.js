@@ -116,18 +116,28 @@
     return n;
   }
   function esc(s) { return String(s).replace(/\r?\n/g, '\\n').replace(/([,;\\])/g, '\\$1'); }
+  // RFC 5545: lines are folded at 75 octets (UTF-8), never inside a multi-byte character
+  function fold(line) {
+    var out = [], cur = '', bytes = 0, limit = 75;
+    Array.from(line).forEach(function (ch) {
+      var n = unescape(encodeURIComponent(ch)).length;
+      if (bytes + n > limit) { out.push(cur); cur = ' ' + ch; bytes = 1 + n; limit = 75; } else { cur += ch; bytes += n; }
+    });
+    out.push(cur);
+    return out.join('\r\n');
+  }
   function toICS(list) {
     var out = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Fikra//EN', 'CALSCALE:GREGORIAN'];
     list.filter(function (i) { return i.date; }).forEach(function (i) {
       var p = parseYmd(i.date);
       var next = new Date(Date.UTC(p.y, p.m, p.d + 1));
       var nd = ymd(next.getUTCFullYear(), next.getUTCMonth(), next.getUTCDate()).replace(/-/g, '');
-      out.push('BEGIN:VEVENT', 'UID:' + i.id + '@fikra', 'DTSTAMP:20260101T000000Z',
+      out.push('BEGIN:VEVENT', 'UID:' + i.id + '@fikra', 'DTSTAMP:' + new Date().toISOString().replace(/[-:]|\.\d{3}/g, ''),
         'DTSTART;VALUE=DATE:' + i.date.replace(/-/g, ''), 'DTEND;VALUE=DATE:' + nd,
         'SUMMARY:' + esc(i.title), 'DESCRIPTION:' + esc((i.hook ? i.hook + '\n' : '') + (i.notes || '')), 'END:VEVENT');
     });
     out.push('END:VCALENDAR');
-    return out.join('\r\n') + '\r\n';
+    return out.map(fold).join('\r\n') + '\r\n';
   }
   function csvCell(v) { v = String(v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; }
   function toCSV(list) {

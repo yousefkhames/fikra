@@ -76,3 +76,14 @@ test('mergeIdeas skips duplicate ids', () => {
   const a = [{ id: '1' }], m = L.mergeIdeas(a, [{ id: '1' }, { id: '2' }]);
   assert.strictEqual(m.added, 1); assert.strictEqual(m.list.length, 2);
 });
+
+test('ICS folds long Arabic lines at 75 octets without splitting a character', () => {
+  const L = require('../logic.js');
+  const i = L.sanitizeIdea({ title: 'فكرة طويلة جدا '.repeat(8), date: '2026-03-05', status: 'idea' });
+  const ics = L.toICS([i]);
+  const lines = ics.split('\r\n');
+  assert.ok(lines.every(l => Buffer.byteLength(l) <= 75), 'every line <= 75 octets');
+  const unfolded = ics.replace(/\r\n /g, '');
+  assert.ok(unfolded.includes('SUMMARY:' + i.title), 'unfolded summary equals the title');
+  assert.match(unfolded, /DTSTAMP:\d{8}T\d{6}Z/);
+});
