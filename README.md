@@ -6,6 +6,15 @@
 
 <p align="center"><a href="https://yousefkhames.github.io/fikra/"><b>Open the live demo</b></a></p>
 
+## Screenshots
+
+Captured from the live site (https://yousefkhames.github.io/fikra/).
+
+<p>
+  <img src="docs/screenshots/live-desktop.png" alt="fikra desktop view" width="640">
+  <img src="docs/screenshots/live-mobile.png" alt="fikra mobile view" width="200">
+</p>
+
 ## Pitch
 
 Most short-video ideas die in a notes app. Fikra gives them a pipeline (idea, script, filmed, posted), 24 hook templates in Arabic and English to get the first three seconds right, and a month calendar so each idea gets a date.
