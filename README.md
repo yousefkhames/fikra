@@ -70,3 +70,10 @@ The end-to-end run covers adding, searching, editing, deleting, status changes, 
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+
+## Demo / portfolio project
+
+Static GitHub Pages site. Data stays in your browser. Sample data is fictional and results are not professional, legal, medical or financial advice.
+
+By Yousef Khames · من تطوير يوسف خميس
